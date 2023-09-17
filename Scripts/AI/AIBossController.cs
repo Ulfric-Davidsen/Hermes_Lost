@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using IHS.Core;
-using IHS.Combat;
+using HL.Core;
+using HL.Combat;
 
-namespace IHS.AI
+namespace HL.AI
 {
     public class AIBossController : MonoBehaviour
     {
@@ -38,7 +38,9 @@ namespace IHS.AI
         [SerializeField] Projectile projectilePhaseOne = null;
         [SerializeField] Projectile projectilePhaseTwo = null;
         [SerializeField] Projectile projectilePhaseThree = null;
-        [SerializeField] Transform projectileSpawnPoint = null;
+        [SerializeField] Transform projectileSpawnPointCenter = null;
+        [SerializeField] Transform projectileSpawnPointLeft = null;
+        [SerializeField] Transform projectileSpawnPointRight = null;
 
         [Header("Phase Booleans")]
         [SerializeField] bool inPhaseOne;
@@ -49,7 +51,7 @@ namespace IHS.AI
 
         private void Awake()
         {
-            player = GameObject.Find("PlayerPrefab").transform;
+            player = GameObject.Find("Player").transform;
             agent = GetComponent<NavMeshAgent>();
         }
 
@@ -60,7 +62,6 @@ namespace IHS.AI
 
         void Update()
         {
-            //Check for sight and attack range
             playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
             playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
@@ -81,8 +82,6 @@ namespace IHS.AI
             }
         }
 
-        /// PRIVATE ///
-
         void Patrolling()
         {
             if (!walkPointSet)
@@ -97,7 +96,6 @@ namespace IHS.AI
 
             Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-            //Walkpoint reached
             if (distanceToWalkPoint.magnitude < 1f)
             {
                 walkPointSet = false;
@@ -106,9 +104,6 @@ namespace IHS.AI
 
         void SearchWalkPoint()
         {
-            Debug.Log("PATROLLING");
-            
-            //Calculate random point in range
             float randomZ = Random.Range(-walkPointRange, walkPointRange);
             float randomX = Random.Range(-walkPointRange, walkPointRange);
 
@@ -122,24 +117,18 @@ namespace IHS.AI
 
         void ChasePlayer()
         {
-            Debug.Log("CHASE PLAYER");
-
             agent.SetDestination(player.position);
         }
 
         void AttackPlayer()
         {
-            //Make sure enemy doesn't move
             agent.SetDestination(transform.position);
 
             transform.LookAt(player);
 
             if (!alreadyAttacked)
             {
-                ///attack code here
-                Debug.Log("FIRE PROJECTILE");
                 CheckPhase();
-                ///
                 alreadyAttacked = true;
                 Invoke(nameof(ResetAttack), timeBetweenAttacks);
             }
@@ -172,7 +161,6 @@ namespace IHS.AI
         {
             if (health.GetHitPoints() >= health.GetMaxHitPoints() * 0.66f)
             {
-                Debug.Log("In Phase ONE");
                 inPhaseOne = true;
                 inPhaseTwo = false;
                 inPhaseThree = false;
@@ -180,7 +168,6 @@ namespace IHS.AI
             }
             if (health.GetHitPoints() <= health.GetMaxHitPoints() * 0.66f && health.GetHitPoints() >= health.GetMaxHitPoints() * 0.33f)
             {
-                Debug.Log("In phase TWO");
                 inPhaseOne = false;
                 inPhaseTwo = true;
                 inPhaseThree = false;
@@ -188,7 +175,6 @@ namespace IHS.AI
             }
             if (health.GetHitPoints() <= health.GetMaxHitPoints() * 0.33f)
             {
-                Debug.Log("In phase THREE");
                 inPhaseOne = false;
                 inPhaseTwo = false;
                 inPhaseThree = true;
@@ -198,17 +184,18 @@ namespace IHS.AI
 
         void LaunchProjectileOne()
         {
-            Instantiate(projectilePhaseOne, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+            Instantiate(projectilePhaseOne, projectileSpawnPointLeft.position, projectileSpawnPointLeft.rotation);
+            Instantiate(projectilePhaseOne, projectileSpawnPointRight.position, projectileSpawnPointRight.rotation);
         }
 
         void LaunchProjectileTwo()
         {
-            Instantiate(projectilePhaseTwo, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+            Instantiate(projectilePhaseTwo, projectileSpawnPointCenter.position, projectileSpawnPointCenter.rotation);
         }
 
         void LaunchProjectileThree()
         {
-            Instantiate(projectilePhaseThree, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+            Instantiate(projectilePhaseThree, projectileSpawnPointCenter.position, projectileSpawnPointCenter.rotation);
         }
 
         void OnDrawGizmosSelected()

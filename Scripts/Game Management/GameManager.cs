@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
 
-namespace IHS.Managers
+namespace HL.Managers
 {
     public class GameManager : MonoBehaviour
     {
@@ -14,6 +14,8 @@ namespace IHS.Managers
         public static event Action LevelConditionsMet;
         public static event Action ScanForWormhole;
         public static event Action EnemyDestroyed;
+        public static event Action PlayerControlsOn;
+        public static event Action PlayerControlsOff;
 
         [SerializeField] KeyCode toggleKey = KeyCode.Escape;
 
@@ -31,6 +33,8 @@ namespace IHS.Managers
         {
             Time.timeScale = 0f;
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            PlayerControlsOffEvent();
             PauseGame?.Invoke();
         }
 
@@ -38,6 +42,8 @@ namespace IHS.Managers
         {
             Time.timeScale = 1f;
             Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            PlayerControlsOnEvent();
             UnPauseGame?.Invoke();
         }
 
@@ -45,6 +51,8 @@ namespace IHS.Managers
         {
             Time.timeScale = 0f;
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            PlayerControlsOffEvent();
             GameOver?.Invoke();
         }
 
@@ -63,23 +71,18 @@ namespace IHS.Managers
             EnemyDestroyed?.Invoke();
         }
 
-        public void TogglePauseMenu()
+        public static void PlayerControlsOnEvent()
         {
-            gameIsPaused = !gameIsPaused;
-
-            if(gameIsPaused)
-            {
-                PauseGameEvent();
-            }
-            if(!gameIsPaused)
-            {
-                UnPauseGameEvent();
-            }
+            PlayerControlsOn?.Invoke();
         }
 
-        public void LoadNextLevel()
+        public static void PlayerControlsOffEvent()
         {
-            Debug.Log("Load Called From Game Manager");
+            PlayerControlsOff?.Invoke();
+        }
+
+        public static void LoadNextLevel()
+        {
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             int nextSceneIndex = currentSceneIndex + 1;
             if(nextSceneIndex == SceneManager.sceneCountInBuildSettings)
@@ -93,6 +96,7 @@ namespace IHS.Managers
         {
             Time.timeScale = 1f;
             Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(currentSceneIndex);
         }
@@ -101,12 +105,27 @@ namespace IHS.Managers
         {
             Time.timeScale = 1f;
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene(0);
         }
 
         public void QuitGame()
         {
             Application.Quit();
+        }
+
+        public void TogglePauseMenu()
+        {
+            gameIsPaused = !gameIsPaused;
+
+            if(gameIsPaused)
+            {
+                PauseGameEvent();
+            }
+            if(!gameIsPaused)
+            {
+                UnPauseGameEvent();
+            }
         }
 
     }

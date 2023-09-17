@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using IHS.Core;
+using HL.Core;
 
-namespace IHS.UI
+namespace HL.UI
 {
     public class PlayerFuelDisplay : MonoBehaviour
     {
@@ -17,7 +17,6 @@ namespace IHS.UI
             fuel = GameObject.FindWithTag("Player").GetComponent<Fuel>();
         }
 
-        
         void Update()
         {
             if (foreground == null) return;

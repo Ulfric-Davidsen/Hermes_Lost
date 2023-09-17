@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using IHS.Core;
+using HL.Core;
 
-namespace IHS.UI
+namespace HL.UI
 {
     public class PlayerHealthDisplay : MonoBehaviour
     {
@@ -17,7 +17,6 @@ namespace IHS.UI
             health = GameObject.FindWithTag("Player").GetComponent<Health>();
         }
 
-        
         void Update()
         {
             if (foreground == null) return;

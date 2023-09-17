@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace IHS.Core
+namespace HL.Core
 {
     public class Energy : MonoBehaviour
     {
@@ -15,21 +15,21 @@ namespace IHS.Core
 
         bool hasEnergy = true;
 
-        ShipMovement shipMovement;
+        Player player;
 
         void Start()
         {
-            shipMovement = GetComponent<ShipMovement>();
+            player = GetComponent<Player>();
         }
 
         void Update() 
         {
             CheckHasEnergy();
-            if (shipMovement.IsFiring() && hasEnergy)
+            if (player.IsFiring() && hasEnergy)
             {
                 SpendEnergy();
             }
-            if (!shipMovement.IsFiring() && energyAmount < maxEnergy)
+            if (!player.IsFiring() && energyAmount < maxEnergy)
             {
                 RechargeEnergy();
             }

@@ -1,95 +1,97 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using IHS.Managers;
+using HL.Managers;
 
-public class Wormhole : MonoBehaviour
+namespace HL.Core
 {
-    [Header("Wormhole Object")]
-    [SerializeField] GameObject wormhole;
-
-    [Header("Scan FX")]
-    [SerializeField] ParticleSystem scanFX = null;
-
-    [Header("Ranges")]
-    [SerializeField] float activationRange = 50f;
-    [SerializeField] float scanRange = 300f;
-
-    [Header("Level Conditions")]
-    [SerializeField] bool levelConditions = true;
-
-    public LayerMask whatIsPlayer;
-
-    bool playerInActivationRange;
-    bool playerInScanRange;
-    bool ableToActivate = false;
-
-
-    void Start()
+    public class Wormhole : MonoBehaviour
     {
-        GameManager.LevelConditionsMet += AbleToActivateWormhole;
-        GameManager.ScanForWormhole += CheckPlayerScanDistance;
-        wormhole.SetActive(false);
+        [Header("Wormhole Object")]
+        [SerializeField] GameObject wormhole;
 
-        CheckLevelConditions();
-    }
+        [Header("Scan FX")]
+        [SerializeField] ParticleSystem scanFX = null;
 
-    
-    void Update()
-    {
-        playerInActivationRange = Physics.CheckSphere(transform.position, activationRange, whatIsPlayer);
+        [Header("Ranges")]
+        [SerializeField] float activationRange = 50f;
+        [SerializeField] float scanRange = 300f;
 
-        if(ableToActivate && playerInActivationRange)
+        [Header("Level Conditions")]
+        [SerializeField] bool levelConditions = true;
+
+        public LayerMask whatIsPlayer;
+
+        bool playerInActivationRange;
+        bool playerInScanRange;
+        bool ableToActivate = false;
+
+
+        void Start()
         {
-            ActivateWormhole();
-        }
-    }
+            GameManager.LevelConditionsMet += AbleToActivateWormhole;
+            GameManager.ScanForWormhole += CheckPlayerScanDistance;
+            wormhole.SetActive(false);
 
-    void CheckLevelConditions()
-    {
-        if(levelConditions == false)
-        {
-            GameManager.LevelConditionsMetEvent();
+            CheckLevelConditions();
         }
-    }
 
-    void CheckPlayerScanDistance()
-    {
-        playerInScanRange = Physics.CheckSphere(transform.position, scanRange, whatIsPlayer);
-
-        if(!playerInScanRange)
-        {
-            Debug.Log("NO ANOMOLIES DETECTED");
-        }
-        if(playerInScanRange)
-        {
-            scanFX.Play();
-        }
         
-    }
+        void Update()
+        {
+            playerInActivationRange = Physics.CheckSphere(transform.position, activationRange, whatIsPlayer);
 
-    void AbleToActivateWormhole()
-    {
-        ableToActivate = true;
-    }
+            if(ableToActivate && playerInActivationRange)
+            {
+                ActivateWormhole();
+            }
+        }
 
-    void ActivateWormhole()
-    {
-        wormhole.SetActive(true);
-    }
+        void CheckLevelConditions()
+        {
+            if(levelConditions == false)
+            {
+                GameManager.LevelConditionsMetEvent();
+            }
+        }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, activationRange);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, scanRange);
-    }
+        void CheckPlayerScanDistance()
+        {
+            playerInScanRange = Physics.CheckSphere(transform.position, scanRange, whatIsPlayer);
 
-    void OnDisable()
-    {
-        GameManager.LevelConditionsMet -= AbleToActivateWormhole;
-        GameManager.ScanForWormhole -= CheckPlayerScanDistance;
-    }
+            if(!playerInScanRange)
+            {
+                Debug.Log("NO ANOMOLIES DETECTED");
+            }
+            if(playerInScanRange)
+            {
+                scanFX.Play();
+            }
+            
+        }
 
+        void AbleToActivateWormhole()
+        {
+            ableToActivate = true;
+        }
+
+        void ActivateWormhole()
+        {
+            wormhole.SetActive(true);
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, activationRange);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, scanRange);
+        }
+
+        void OnDisable()
+        {
+            GameManager.LevelConditionsMet -= AbleToActivateWormhole;
+            GameManager.ScanForWormhole -= CheckPlayerScanDistance;
+        }
+    }
 }

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using IHS.Core;
+using HL.Core;
 
-namespace IHS.Combat
+namespace HL.Combat
 {
     public class DamageOnCollision : MonoBehaviour
     {

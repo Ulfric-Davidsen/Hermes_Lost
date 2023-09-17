@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IHS.Managers
+namespace HL.Managers
 {
     public class UIManager : MonoBehaviour
     {

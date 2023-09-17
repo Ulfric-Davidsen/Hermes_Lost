@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IHS.Items
+namespace HL.Items
 {
     public class RandomItemSpawner : MonoBehaviour
     {

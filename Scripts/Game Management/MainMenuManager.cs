@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-namespace IHS.Managers
+namespace HL.Managers
 {
     public class MainMenuManager : MonoBehaviour
     {
         void Start()
         {
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
         public void LoadNextLevel()

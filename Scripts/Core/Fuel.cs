@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-namespace IHS.Core
+namespace HL.Core
 {
     public class Fuel : MonoBehaviour
     {
@@ -22,17 +22,17 @@ namespace IHS.Core
 
         bool hasFuel = true;
 
-        ShipMovement shipMovement;
+        Player player;
 
         void Start()
         {
-            shipMovement = GetComponent<ShipMovement>();
+            player = GetComponent<Player>();
         }
 
         void Update() 
         {
             CheckHasFuel();
-            if (shipMovement.IsThrusting() && hasFuel)
+            if (player.IsMoving() && hasFuel)
             {
                 SpendFuel();
             }

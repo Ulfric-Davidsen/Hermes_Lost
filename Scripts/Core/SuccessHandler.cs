@@ -2,28 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using HL.Managers;
 
-namespace IHS.Core
+namespace HL.Core
 {
     public class SuccessHandler : MonoBehaviour
     {
         [Header("Success VFX")]
         [SerializeField] ParticleSystem successParticles;
         [SerializeField] Transform particleSpawn;
-        
-        [Header("Load Next Level Delay")]
-        [SerializeField] float timeDelay = 1f;
 
         [Header("Player Mesh")]
         [SerializeField] GameObject playerMesh;
 
-        ShipMovement shipMovement;
+        [Header("Time Before Load")]
+        [SerializeField] float waitTime = 1f;
+
+        Player player;
 
         bool isTransitioning = false;
 
         void Start()
         {
-            shipMovement = GetComponent<ShipMovement>();
+            player = GetComponent<Player>();
         }
 
         void OnTriggerEnter(Collider collision)
@@ -32,30 +33,19 @@ namespace IHS.Core
 
             if (collision.gameObject.tag == "Finish")
             {
-                FinishSequence();
+                StartCoroutine("FinishSequence");
             }
         }
 
-        void FinishSequence()
+        private IEnumerator FinishSequence()
         {
             isTransitioning = true;
 
-            shipMovement.enabled = false;
+            player.enabled = false;
             playerMesh.SetActive(false);
             Instantiate(successParticles, particleSpawn.position, particleSpawn.rotation);
-            // GameManager.Instance.LoadNextLevel();
-            Invoke ("LoadNextLevel", timeDelay);
-        }
-
-        void LoadNextLevel()
-        {
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            int nextSceneIndex = currentSceneIndex + 1;
-            if(nextSceneIndex == SceneManager.sceneCountInBuildSettings)
-            {
-                nextSceneIndex = 0;
-            }
-            SceneManager.LoadScene(nextSceneIndex);
+            yield return new WaitForSeconds(waitTime);
+            GameManager.LoadNextLevel();
         }
     }
 }

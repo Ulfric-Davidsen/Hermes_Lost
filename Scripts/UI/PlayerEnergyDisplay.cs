@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using IHS.Core;
+using HL.Core;
 
-namespace IHS.UI
+namespace HL.UI
 {
     public class PlayerEnergyDisplay : MonoBehaviour
     {
@@ -16,7 +16,6 @@ namespace IHS.UI
         {
             energy = GameObject.FindWithTag("Player").GetComponent<Energy>();
         }
-
         
         void Update()
         {

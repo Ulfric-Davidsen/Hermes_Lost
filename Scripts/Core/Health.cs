@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace IHS.Core
+namespace HL.Core
 {
     public class Health : MonoBehaviour
     {

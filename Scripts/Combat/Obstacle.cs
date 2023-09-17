@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FirstGearGames.SmoothCameraShaker;
-using IHS.Core;
-using IHS.Items;
+using HL.Core;
+using HL.Items;
 
-namespace IHS.Combat
+namespace HL.Combat
 {
     public class Obstacle : MonoBehaviour
     {

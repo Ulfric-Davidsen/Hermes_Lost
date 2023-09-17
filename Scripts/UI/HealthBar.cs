@@ -2,24 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using IHS.Core;
+using HL.Core;
 
-public class HealthBar : MonoBehaviour
+namespace HL.UI
 {
-    [SerializeField] Health health = null;
-    [SerializeField] RectTransform foreground = null;
-    [SerializeField] Canvas rootCanvas = null;
-
-    void Update()
+    public class HealthBar : MonoBehaviour
     {
-        if(Mathf.Approximately(health.GetFraction(), 0)
-        || Mathf.Approximately(health.GetFraction(), 1))
-        {
-            rootCanvas.enabled = false;
-            return;
-        }
-        rootCanvas.enabled = true;
+        [SerializeField] Health health = null;
+        [SerializeField] RectTransform foreground = null;
+        [SerializeField] Canvas rootCanvas = null;
 
-        foreground.GetComponent<Image>().fillAmount = health.GetFraction();
+        void Update()
+        {
+            if(Mathf.Approximately(health.GetFraction(), 0)
+            || Mathf.Approximately(health.GetFraction(), 1))
+            {
+                rootCanvas.enabled = false;
+                return;
+            }
+            rootCanvas.enabled = true;
+
+            foreground.GetComponent<Image>().fillAmount = health.GetFraction();
+        }
     }
 }

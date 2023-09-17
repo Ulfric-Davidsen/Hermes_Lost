@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IHS.UI
+namespace HL.UI
 {
     public class FuelAnimationTrigger : MonoBehaviour
     {

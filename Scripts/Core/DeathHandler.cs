@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FirstGearGames.SmoothCameraShaker;
-using IHS.Managers;
+using HL.Managers;
 
-namespace IHS.Core
+namespace HL.Core
 {
     public class DeathHandler : MonoBehaviour
     {
@@ -21,14 +21,14 @@ namespace IHS.Core
         [Header("Player Mesh")]
         [SerializeField] GameObject playerMesh;
 
-        ShipMovement shipMovement;
+        Player player;
         Health health;
 
         bool isTransitioning = false;
 
         void Start()
         {
-            shipMovement = GetComponent<ShipMovement>();
+            player = GetComponent<Player>();
             health = GetComponent<Health>();
         }
 
@@ -46,9 +46,6 @@ namespace IHS.Core
         {
             isTransitioning = true;
 
-            shipMovement.enabled = false;
-            shipMovement.StopThrusting();
-            shipMovement.StopRotation();
             playerMesh.SetActive(false);
             Instantiate(deathParticles, particleSpawn.position, particleSpawn.rotation);
             CameraShakerHandler.Shake(MyShake);

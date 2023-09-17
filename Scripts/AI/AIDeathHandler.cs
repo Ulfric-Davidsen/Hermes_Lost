@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FirstGearGames.SmoothCameraShaker;
-using IHS.Core;
-using IHS.Managers;
+using HL.Core;
+using HL.Managers;
 
-namespace IHS.AI
+namespace HL.AI
 {
     public class AIDeathHandler : MonoBehaviour
     {

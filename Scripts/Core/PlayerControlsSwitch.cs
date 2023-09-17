@@ -1,38 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using IHS.Managers;
+using HL.Managers;
 
-namespace IHS.Core
+namespace HL.Core
 {
     public class PlayerControlsSwitch : MonoBehaviour
     {
-        ShipMovement shipMovement;
+        Player player;
 
+        void OnEnable()
+        {
+            GameManager.PlayerControlsOff += PlayerControlsOff;
+            GameManager.PlayerControlsOn += PlayerControlsOn;
+        }
         void Start()
         {
-            GameManager.PauseGame += ShipControlsOff;
-            GameManager.UnPauseGame += ShipControlsOn;
-            GameManager.GameOver += ShipControlsOff;
-
-            shipMovement = GetComponent<ShipMovement>();
+            player = GetComponent<Player>();
         }
 
-        void ShipControlsOn()
+        void PlayerControlsOn()
         {
-            shipMovement.enabled = true;
+            player.enabled = true;
         }
 
-        void ShipControlsOff()
+        void PlayerControlsOff()
         {
-            shipMovement.enabled = false;
+            player.enabled = false;
         }
 
         void OnDisable()
         {
-            GameManager.PauseGame -= ShipControlsOff;
-            GameManager.UnPauseGame -= ShipControlsOn;
-            GameManager.GameOver -= ShipControlsOff;
+            GameManager.PlayerControlsOff -= PlayerControlsOff;
+            GameManager.PlayerControlsOn -= PlayerControlsOn;
         }
     }
 }
